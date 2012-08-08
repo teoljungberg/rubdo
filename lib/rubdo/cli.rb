@@ -28,7 +28,7 @@ module Rubdo
 
     def list
       @list.items.each_with_index { |item, index| puts "#{index + 1}: #{item.description}" }
-      puts "no tasks" if @list.empty?
+      puts "no tasks" if @list.items.empty?
     end
 
     def info

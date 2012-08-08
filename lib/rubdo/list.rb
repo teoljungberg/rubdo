@@ -12,8 +12,8 @@ module Rubdo
       @items, @completed = [], []
       @items = load @storage
       @completed = load @archive
-      create_directory @storage
-      create_directory @archive
+      create_directory_for @storage
+      create_directory_for @archive
     end
 
     def add(description)
@@ -41,8 +41,8 @@ module Rubdo
       @items[id].to_s
     end
 
-    def create_save_directory(file)
-      FileUtils.mkdir( File.dirname(file) ) unless File.exists? file
+    def create_directory_for(file)
+      FileUtils.mkdir File.dirname(file) unless File.exists? file
     end
 
     alias_method :<<, :add

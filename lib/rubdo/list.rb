@@ -1,16 +1,18 @@
 require 'time'
 require 'yaml'
+require 'fileutils'
 
 module Rubdo
   class List
     attr_reader :items, :completed, :storage, :archive
 
     def initialize
-      @storage = File.expand_path('~/Dropbox/tasks/Todo.yml')
-      @archive = File.expand_path('~/Dropbox/tasks/Archive.yml')
+      @storage = File.expand_path('~/tasks/Todo.yml')
+      @archive = File.expand_path('~/tasks/Archive.yml')
       @items, @completed = [], []
       @items = load @storage
       @completed = load @archive
+      create_save_directory
     end
 
     def add(description)
@@ -36,6 +38,11 @@ module Rubdo
 
     def info(id)
       @items[id].to_s
+    end
+
+    def create_save_directory
+      FileUtils.mkdir File.dirname(@storage) unless File.exists? @storage
+      FileUtils.mkdir File.dirname(@archive) unless File.exists? @archive
     end
 
     alias_method :<<, :add

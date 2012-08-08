@@ -1,6 +1,6 @@
 # Rubdo
 
-TODO: Write a gem description
+A quick and dirty todo application
 
 ## Installation
 
@@ -18,7 +18,26 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Here are the available commands for `rubdo`
+
+    Commands for todo:
+    ------------------     
+    add/a [task description] - Add a new task
+    list/ls - Lists all tasks
+    completed - List all completed tasks
+    done/d [task id] - Complete a task
+    info [task id] - Gives info about the specific task
+    edit/e [task id] - Opens up $EDITOR to edit the task description
+    remove/rm [task id] - Deleted task id from the list
+    help - Prints out this information
+
+`rubdo` createas _~/tasks_ where it holds the YAML files with the todos inside.
+If you want to keep your todos synced accross your machines, make a symlink to say
+a directory inside of _Dropbox_ 
+
+    $ ln -s ~/Dropbox/tasks/ ~/tasks
+
+Make sure to save your todos first!
 
 ## Contributing
 

@@ -10,10 +10,9 @@ module Rubdo
       @storage = File.expand_path('~/tasks/Todo.yml')
       @archive = File.expand_path('~/tasks/Archive.yml')
       @items, @completed = [], []
+      create_directory File.dirname @storage
       @items = load @storage
       @completed = load @archive
-      create_directory_for @storage
-      create_directory_for @archive
     end
 
     def add(description)
@@ -41,8 +40,8 @@ module Rubdo
       @items[id].to_s
     end
 
-    def create_directory_for(file)
-      FileUtils.mkdir File.dirname(file) unless File.exists? file
+    def create_directory(folder)
+      FileUtils.mkdir folder unless Dir.exists? folder
     end
 
     alias_method :<<, :add

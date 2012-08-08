@@ -6,7 +6,12 @@ module Rubdo
     end
 
     def add
-      @list.add ARGV[1]
+      @list.add ARGV[1] if ARGV[1]
+      unless ARGV[1]
+        system("$EDITOR /tmp/new_task.txt")
+        @list.add File.read('/tmp/new_task.txt').chomp
+        File.delete("/tmp/new_task.txt")
+      end
     end
 
     def done
@@ -23,6 +28,7 @@ module Rubdo
 
     def list
       @list.items.each_with_index { |item, index| puts "#{index + 1}: #{item.description}" }
+      puts "no tasks" if @list.empty?
     end
 
     def info
@@ -47,9 +53,9 @@ module Rubdo
 
     def help(onoe = nil)
       puts <<-HELP
-                                                  Commands for todo:
+Commands for todo:
 ------------------     
-add/a [task description] - Add a new tas
+add/a [task description] - Add a new task
 list/ls - Lists all tasks
 completed - List all completed tasks
 done/d [task id] - Complete a task

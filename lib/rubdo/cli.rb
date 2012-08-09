@@ -14,7 +14,7 @@ module Rubdo
           @list.add File.read(tmp_file).chomp  
           File.delete(tmp_file)
         else
-          puts "aborted because of empty file"
+          puts "aborted because due to empty file"
         end
       end
     end
@@ -56,17 +56,17 @@ module Rubdo
       @list.items.delete_at(@id)
     end
 
-    def help(onoe = nil)
+    def help
       puts <<-HELP
-Commands for todo:
+Commands for rubdo:
 ------------------     
-add/a [task description] - Add a new task
+add/a [task description] - Add a new task. If the description is empty, $EDITOR is opened
 list/ls - Lists all tasks
 completed - List all completed tasks
 done/d [task id] - Complete a task
 info [task id] - Gives info about the specific task
 edit/e [task id] - Opens up $EDITOR to edit the task description
-remove/rm [task id] - Deleted task id from the list
+remove/rm [task id] - Deletes the specific task
 help - Prints out this information
       HELP
     end

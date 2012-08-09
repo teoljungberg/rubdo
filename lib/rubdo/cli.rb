@@ -8,9 +8,14 @@ module Rubdo
     def add
       @list.add ARGV[1] if ARGV[1]
       unless ARGV[1]
-        system("$EDITOR /tmp/new_task.txt")
-        @list.add File.read('/tmp/new_task.txt').chomp
-        File.delete("/tmp/new_task.txt")
+        tmp_file = '/tmp/new_task.txt'
+        system("$EDITOR #{tmp_file}")
+        if File.exists? tmp_file
+          @list.add File.read(tmp_file).chomp  
+          File.delete(tmp_file)
+        else
+          puts "aborted because of empty file"
+        end
       end
     end
 

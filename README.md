@@ -39,6 +39,14 @@ a directory inside of _Dropbox_
 
 Make sure to save your todos first!
 
+A tip is to alias `rubdo` to `t` for easier typing
+for `bash` and `zsh`
+
+    alias t="rubdo"
+
+and add that to your _{bash, zsh}rc_ 
+
+
 ## Contributing
 
 1. Fork it

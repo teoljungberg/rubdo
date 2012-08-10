@@ -20,20 +20,21 @@ Or install it yourself as:
 
 Here are the available commands for `rubdo`
 
-    Commands for todo:
+
+    Commands for rubdo:
     ------------------     
-    add/a [task description] - Add a new task
+    add/a [task description] - Add a new task. If the description is empty, $EDITOR is opened
     list/ls - Lists all tasks
     completed - List all completed tasks
     done/d [task id] - Complete a task
     info [task id] - Gives info about the specific task
     edit/e [task id] - Opens up $EDITOR to edit the task description
-    remove/rm [task id] - Deleted task id from the list
+    remove/rm [task id] - Deletes the specific task
     help - Prints out this information
 
 `rubdo` createas _~/tasks_ where it holds the YAML files with the todos inside.
 If you want to keep your todos synced accross your machines, make a symlink to say
-a directory inside of _Dropbox_ 
+a directory inside of _~/Dropbox_ 
 
     $ ln -s ~/Dropbox/tasks/ ~/tasks
 

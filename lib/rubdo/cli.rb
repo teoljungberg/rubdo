@@ -14,7 +14,7 @@ module Rubdo
           @list.add File.read(tmp_file).chomp  
           File.delete(tmp_file)
         else
-          puts "aborted because due to empty file"
+          puts "aborted due to empty file"
         end
       end
     end

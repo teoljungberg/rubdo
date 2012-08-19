@@ -1,3 +1,5 @@
+require 'tempfile'
+
 module Rubdo
   class CLI
     def initialize
@@ -7,15 +9,13 @@ module Rubdo
 
     def add
       @list.add ARGV[1] if ARGV[1]
-      unless ARGV[1]
-        tmp_file = '/tmp/new_task.txt'
-        system("$EDITOR #{tmp_file}")
-        if File.exists? tmp_file
-          @list.add File.read(tmp_file).chomp  
-          File.delete(tmp_file)
-        else
-          puts "aborted due to empty file"
-        end
+      tmp_file = Tempfile.new('new_task')
+      system("$EDITOR #{tmp_file.path}")
+      unless File.read(tmp_file.path).empty?
+        @list.add File.read(tmp_file).chomp  
+        tmp_file.unlink
+      else
+        puts "aborted due to empty file"
       end
     end
 
@@ -45,15 +45,15 @@ module Rubdo
     end
 
     def edit
-      tmp_file = '/tmp/todo_desc.txt'
-      system("echo '#{@list.items[@id].description}' > #{tmp_file}")
-      system("$EDITOR #{tmp_file}")
+      tmp_file = Tempfile.new('todo_desc.txt')
+      File.open(tmp_file.path, 'w') { |f| f.write(@list.items[@id].description) }
+      system("$EDITOR #{tmp_file.path}")
       @list.items[@id].description = File.read(tmp_file).chomp
-      File.delete(tmp_file)
+      Tempfile.delete(tmp_file)
     end
 
     def remove
-      @list.items.delete_at(@id)
+      @list.items.delete_at @id
     end
 
     def help

@@ -45,7 +45,7 @@ module Rubdo
     end
 
     def edit
-      tmp_file = Tempfile.new('todo_desc.txt')
+      tmp_file = Tempfile.new('new_desc')
       File.open(tmp_file.path, 'w') { |f| f.write(@list.items[@id].description) }
       system("$EDITOR #{tmp_file.path}")
       @list.items[@id].description = File.read(tmp_file).chomp

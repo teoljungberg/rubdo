@@ -13,7 +13,7 @@ module Rubdo
       system("$EDITOR #{tmp_file.path}")
       unless File.read(tmp_file.path).empty?
         @list.add File.read(tmp_file).chomp  
-        tmp_file.unlink
+        tmp_file.delete
       else
         puts "aborted due to empty file"
       end
@@ -49,7 +49,7 @@ module Rubdo
       File.open(tmp_file.path, 'w') { |f| f.write(@list.items[@id].description) }
       system("$EDITOR #{tmp_file.path}")
       @list.items[@id].description = File.read(tmp_file).chomp
-      Tempfile.delete(tmp_file)
+      tmp_file.delete
     end
 
     def remove

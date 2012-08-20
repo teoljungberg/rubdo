@@ -36,7 +36,7 @@ Here are the available commands for `rubdo`
 If you want to keep your todos synced accross your machines, make a symlink to say
 a directory inside of _~/Dropbox_ 
 
-    $ ln -s ~/Dropbox/tasks/ ~/tasks
+    $ ln -s ~/Dropbox/tasks/ ~/.tasks
 
 Make sure to save your todos first!
 

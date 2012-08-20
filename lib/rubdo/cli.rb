@@ -8,14 +8,17 @@ module Rubdo
     end
 
     def add
-      @list.add ARGV[1] if ARGV[1]
-      tmp_file = Tempfile.new('new_task')
-      system("$EDITOR #{tmp_file.path}")
-      unless File.read(tmp_file.path).empty?
-        @list.add File.read(tmp_file).chomp  
-        tmp_file.delete
+      if ARGV[1]
+        @list.add ARGV[1] if ARGV[1]
       else
-        puts "aborted due to empty file"
+        tmp_file = Tempfile.new('new_task')
+        system("$EDITOR #{tmp_file.path}")
+        unless File.read(tmp_file.path).empty?
+          @list.add File.read(tmp_file).chomp  
+          tmp_file.delete
+        else
+          puts "aborted due to empty file"
+        end
       end
     end
 
@@ -70,11 +73,5 @@ remove/rm [task id] - Deletes the specific task
 help - Prints out this information
       HELP
     end
-
-    alias_method :a, :add
-    alias_method :ls, :list
-    alias_method :d, :done
-    alias_method :e, :edit
-    alias_method :rm, :remove
   end
 end

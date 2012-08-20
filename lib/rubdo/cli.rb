@@ -9,7 +9,7 @@ module Rubdo
 
     def add
       if ARGV[1]
-        @list.add ARGV[1] if ARGV[1]
+        @list.add ARGV[1]
       else
         tmp_file = Tempfile.new('new_task')
         system("$EDITOR #{tmp_file.path}")
@@ -48,6 +48,7 @@ module Rubdo
     end
 
     def edit
+      abort("not a valid id") if @id == -1 or @id > @list.items.length
       tmp_file = Tempfile.new('new_desc')
       File.open(tmp_file.path, 'w') { |f| f.write(@list.items[@id].description) }
       system("$EDITOR #{tmp_file.path}")
@@ -73,5 +74,7 @@ remove/rm [task id] - Deletes the specific task
 help - Prints out this information
       HELP
     end
+
+    alias_method :ls, :list
   end
 end

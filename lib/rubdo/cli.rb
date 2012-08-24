@@ -76,5 +76,6 @@ help - Prints out this information
     end
 
     alias_method :ls, :list
+    alias_method :rm, :remove
   end
 end

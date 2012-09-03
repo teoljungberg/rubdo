@@ -23,7 +23,7 @@ module Rubdo
     end
 
     def done
-      @list.done @id
+      @list.done ARGV[1..-1]
     end
 
     def remove

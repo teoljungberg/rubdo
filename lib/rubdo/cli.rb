@@ -4,7 +4,7 @@ module Rubdo
   class CLI
     def initialize
       @list = List.new
-      @id = ARGV[1].to_i - 1 
+      @id = ARGV[1].to_i - 1
     end
 
     def add
@@ -14,7 +14,7 @@ module Rubdo
         tmp_file = Tempfile.new('new_task')
         system("$EDITOR #{tmp_file.path}")
         unless File.read(tmp_file.path).empty?
-          @list.add File.read(tmp_file).chomp  
+          @list.add File.read(tmp_file).chomp
           tmp_file.delete
         else
           puts "aborted due to empty file"
@@ -35,7 +35,7 @@ module Rubdo
     end
 
     def list
-      @list.items.each_with_index { |item, index| puts "#{index + 1}: #{item.description}" }
+      @list.items.each_with_index do |item, index| puts "#{index + 1}: #{item.description}" }
       puts "no tasks" if @list.items.empty?
     end
 
@@ -63,7 +63,7 @@ module Rubdo
     def help
       puts <<-HELP
 Commands for rubdo:
-------------------     
+-----------------
 add/a [task description] - Add a new task. If the description is empty, $EDITOR is opened
 list/ls - Lists all tasks
 completed - List all completed tasks

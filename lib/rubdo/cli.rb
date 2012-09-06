@@ -23,7 +23,7 @@ module Rubdo
     end
 
     def done
-      @list.done ARGV[1..-1]
+      @list.done @id
     end
 
     def remove
@@ -35,7 +35,7 @@ module Rubdo
     end
 
     def list
-      @list.items.each_with_index do |item, index| puts "#{index + 1}: #{item.description}" }
+      @list.items.each_with_index { |item, index| puts "#{index + 1}: #{item.description}" }
       puts "no tasks" if @list.items.empty?
     end
 

@@ -20,7 +20,6 @@ Or install it yourself as:
 
 Here are the available commands for `rubdo`
 
-
     Commands for rubdo:
     ------------------     
     add/a [task description] - Add a new task. If the description is empty, $EDITOR is opened
@@ -32,7 +31,7 @@ Here are the available commands for `rubdo`
     remove/rm [task id] - Deletes the specific task
     help - Prints out this information
 
-`rubdo` createas _~/tasks_ where it holds the YAML files with the todos inside.
+`rubdo` createas _~/.tasks_ where it holds the YAML files with the todos inside.
 If you want to keep your todos synced accross your machines, make a symlink to say
 a directory inside of _~/Dropbox_ 
 
@@ -46,7 +45,6 @@ for `bash` and `zsh`
     alias t="rubdo"
 
 and add that to your _{bash, zsh}rc_ 
-
 
 ## Contributing
 

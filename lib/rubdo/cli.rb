@@ -23,11 +23,6 @@ module Rubdo
     end
 
     def done
-      @list.done @id
-    end
-
-    def remove
-      @list.remove @id
     end
 
     def save

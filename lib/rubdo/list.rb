@@ -30,10 +30,10 @@ module Rubdo
     end
 
     def done(id)
-      abort("that id doesn't exists") if @items[id].nil?
-      @items[id].done = true
-      @items[id].completed_at = Time.new
-      @completed << @items[id]
+      abort("that id doesn't exists") if task.nil?
+      task.done = true
+      task.completed_at = Time.new
+      @completed << task
     end
 
     def info(id)

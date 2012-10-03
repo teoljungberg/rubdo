@@ -23,6 +23,8 @@ module Rubdo
     end
 
     def done
+      task = @list.list @id
+      @list.done task
     end
 
     def save
@@ -35,11 +37,12 @@ module Rubdo
     end
 
     def info
+      task = @list.list @id
       puts @list.info @id
     end
 
-    def completed
-      @list.completed.each { |item| puts "#{item.description}, completed at: #{item.completed_at.strftime('%m.%d.%y - %H:%M')}" }
+    def remove
+      @list.items.delete_at @id
     end
 
     def edit
@@ -51,8 +54,8 @@ module Rubdo
       tmp_file.delete
     end
 
-    def remove
-      @list.items.delete_at @id
+    def completed
+      @list.completed.each { |item| puts "#{item.description}, completed at: #{item.completed_at.strftime('%m.%d.%y - %H:%M')}" }
     end
 
     def help

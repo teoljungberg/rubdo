@@ -24,11 +24,9 @@ Here are the available commands for `rubdo`
     ------------------     
     add/a [task description] - Add a new task. If the description is empty, $EDITOR is opened
     list/ls - Lists all tasks
-    completed - List all completed tasks
     done/d [task id] - Complete a task
-    info [task id] - Gives info about the specific task
     edit/e [task id] - Opens up $EDITOR to edit the task description
-    remove/rm [task id] - Deletes the specific task
+    remove/rm [task id] - Deletes the specific task, same as done
     help - Prints out this information
 
 `rubdo` createas _~/.tasks_ where it holds the YAML files with the todos inside.

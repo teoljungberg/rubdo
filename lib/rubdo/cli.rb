@@ -33,16 +33,6 @@ module Rubdo
       puts "no tasks" if @list.items.empty?
     end
 
-    def info
-      task = @list.list @id
-      puts @list.info @id
-    end
-
-    def remove
-      @list.items.delete_at @id
-      save
-    end
-
     def edit
       abort("not a valid id") if @id == -1 or @id > @list.items.length
       tmp_file = Tempfile.new('new_desc')
@@ -53,27 +43,20 @@ module Rubdo
       save
     end
 
-    def completed
-      @list.completed.each { |item| puts "#{item.description}, completed at: #{item.completed_at.strftime('%m.%d.%y - %H:%M')}" }
-    end
-
     def help
       puts <<-HELP
-Commands for rubdo:
 -----------------
 add/a [task description] - Add a new task. If the description is empty, $EDITOR is opened
 list/ls - Lists all tasks
-completed - List all completed tasks
 done/d [task id] - Complete a task
-info [task id] - Gives info about the specific task
 edit/e [task id] - Opens up $EDITOR to edit the task description
-remove/rm [task id] - Deletes the specific task
+remove/rm [task id] - Deletes the specific task, same as done
 help - Prints out this information
       HELP
     end
 
     alias_method :ls, :list
-    alias_method :rm, :remove
+    alias_method :rm, :done
 
     private
 

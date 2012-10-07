@@ -8,10 +8,9 @@ module Rubdo
 
     def initialize
       @storage = File.expand_path('~/.tasks/Todo.yml')
-      @archive = File.expand_path('~/.tasks/Archive.yml')
-      @items, @completed = [], []
+      @items = []
       FileUtils.mkdir_p File.dirname @storage
-      @items, @completed = read(@storage), read(@archive)
+      @items = read(@storage)
     end
 
     def add(description)
@@ -19,8 +18,7 @@ module Rubdo
     end
 
     def write
-      File.open(@storage, 'w') { |todos| todos.write(@items.select { |item| item.done == false }.to_yaml) }
-      File.open(@archive, 'w') { |todos| todos.write(@completed.to_yaml) }
+      File.open(@storage, 'w') { |todos| todos.write(@items.to_yaml) }
     end
 
     def read(file)
@@ -29,15 +27,7 @@ module Rubdo
     end
 
     def done(id)
-      abort("that id doesn't exists") if id.nil?
-      task = @items[id - 1]
-      task.done = true
-      task.completed_at = Time.new
-      @completed << task
-    end
-
-    def info(id)
-      @items[id].to_s
+      @items.delete_at id
     end
 
     alias_method :<<, :add

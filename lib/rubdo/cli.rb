@@ -20,15 +20,12 @@ module Rubdo
           puts "aborted due to empty file"
         end
       end
+      save
     end
 
     def done
-      task = @list.list @id
-      @list.done task
-    end
-
-    def save
-      @list.write
+      @list.done @id
+      save
     end
 
     def list
@@ -43,6 +40,7 @@ module Rubdo
 
     def remove
       @list.items.delete_at @id
+      save
     end
 
     def edit
@@ -52,6 +50,7 @@ module Rubdo
       system("$EDITOR #{tmp_file.path}")
       @list.items[@id].description = File.read(tmp_file).chomp
       tmp_file.delete
+      save
     end
 
     def completed
@@ -75,5 +74,11 @@ help - Prints out this information
 
     alias_method :ls, :list
     alias_method :rm, :remove
+
+    private
+
+    def save
+      @list.write
+    end
   end
 end

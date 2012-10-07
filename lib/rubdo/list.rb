@@ -11,8 +11,7 @@ module Rubdo
       @archive = File.expand_path('~/.tasks/Archive.yml')
       @items, @completed = [], []
       FileUtils.mkdir_p File.dirname @storage
-      @items = load @storage
-      @completed = load @archive
+      @items, @completed = read(@storage), read(@archive)
     end
 
     def add(description)
@@ -24,13 +23,14 @@ module Rubdo
       File.open(@archive, 'w') { |todos| todos.write(@completed.to_yaml) }
     end
 
-    def load(file)
+    def read(file)
       return YAML.load_file(file) if File.exists? file
       []
     end
 
     def done(id)
-      abort("that id doesn't exists") if task.nil?
+      abort("that id doesn't exists") if id.nil?
+      task = @items[id - 1]
       task.done = true
       task.completed_at = Time.new
       @completed << task

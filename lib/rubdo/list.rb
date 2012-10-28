@@ -4,7 +4,7 @@ require 'fileutils'
 
 module Rubdo
   class List
-    attr_reader :items, :completed, :storage, :archive
+    attr_reader :items, :completed, :storage
 
     def initialize
       @storage = File.expand_path('~/.tasks/Todo.yml')

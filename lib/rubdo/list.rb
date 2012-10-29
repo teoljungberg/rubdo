@@ -30,6 +30,10 @@ module Rubdo
       @items.delete_at id
     end
 
+    def to_s
+      return @items
+    end
+
     alias_method :<<, :add
   end
 end

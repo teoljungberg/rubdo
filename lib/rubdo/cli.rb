@@ -29,7 +29,7 @@ module Rubdo
     end
 
     def list
-      @list.to_s.each_with_index { |item, index| puts "#{index + 1}: #{item.description}" }
+      @list.to_a.each_with_index { |item, index| puts "#{index + 1}: #{item.description}" }
       puts "no tasks" if @list.items.empty?
     end
 

@@ -30,7 +30,7 @@ module Rubdo
       @items.delete_at id
     end
 
-    def to_s
+    def to_a
       return @items
     end
 

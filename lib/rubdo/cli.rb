@@ -3,7 +3,8 @@ require 'tempfile'
 module Rubdo
   class CLI
     def initialize
-      @list = List.new
+      todos = List.read(File.expand_path('~/.tasks/Todo.yml'))
+      @list = List.new(todos)
       @id = ARGV[1].to_i - 1
     end
 

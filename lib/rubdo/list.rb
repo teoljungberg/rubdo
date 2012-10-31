@@ -6,11 +6,15 @@ module Rubdo
   class List
     attr_reader :items, :completed, :storage
 
-    def initialize
+    def self.read(file)
+      return YAML.load_file(file) if File.exists? file
+      []
+    end
+
+    def initialize(todos)
+      @items = todos
       @storage = File.expand_path('~/.tasks/Todo.yml')
-      @items = []
       FileUtils.mkdir_p File.dirname @storage
-      @items = read(@storage)
     end
 
     def add(description)
@@ -18,12 +22,7 @@ module Rubdo
     end
 
     def write
-      File.open(@storage, 'w') { |todos| todos.write(@items.to_yaml) }
-    end
-
-    def read(file)
-      return YAML.load_file(file) if File.exists? file
-      []
+      File.open(self.storage, 'w') { |todos| todos.write(@items.to_yaml) }
     end
 
     def done(id)
@@ -31,7 +30,7 @@ module Rubdo
     end
 
     def to_a
-      return @items
+      self.items
     end
 
     alias_method :<<, :add

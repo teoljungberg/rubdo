@@ -9,5 +9,5 @@ cli.list if ARGV[0].nil?
 begin 
   cli.send methods[ARGV[0]] unless ARGV[0].nil?
 rescue
-  puts "cowardly refuses"
+  puts "cowardly refuses" unless methods[ARGV[0]]
 end

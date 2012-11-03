@@ -4,11 +4,13 @@ require 'fileutils'
 
 module Rubdo
   class List
-    attr_reader :items, :completed, :storage
+    attr_reader :items, :storage
 
     def self.read(file)
-      return YAML.load_file(file) if File.exists? file
-      []
+      todos = YAML.load_file(file) if File.exists? file
+      todos ||=[]
+
+      todos
     end
 
     def initialize(todos)

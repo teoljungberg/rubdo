@@ -31,15 +31,16 @@ module Rubdo
 
     def list
       @list.to_a.each_with_index { |item, index| puts "#{index + 1}: #{item.description}" }
-      puts "no tasks" if @list.items.empty?
+      puts "no tasks" if @list.to_a.empty?
     end
 
     def edit
-      abort("not a valid id") if @id == -1 or @id > @list.items.length
-      tmp_file = Tempfile.new('new_desc')
-      File.open(tmp_file.path, 'w') { |f| f.write(@list.items[@id].description) }
+      abort("not a valid id") if @id == -1 or @id > @list.to_a.length
+
+      tmp_file = Tempfile.new('new_description')
+      File.open(tmp_file.path, 'w') { |f| f.write(@list.to_a[@id].description) }
       system("$EDITOR #{tmp_file.path}")
-      @list.items[@id].description = File.read(tmp_file).chomp
+      @list.to_a[@id].description = File.read(tmp_file).chomp
       tmp_file.delete
       save
     end

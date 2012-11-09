@@ -23,12 +23,16 @@ module Rubdo
       @items << Item.new(description)
     end
 
-    def write
-      File.open(self.storage, 'w') { |todos| todos.write(@items.to_yaml) }
-    end
-
     def done(id)
       @items.delete_at id
+    end
+
+    def edit(id)
+      @items[id]
+    end
+
+    def write
+      File.open(self.storage, 'w') { |todos| todos.write(@items.to_yaml) }
     end
 
     def to_a
@@ -36,5 +40,6 @@ module Rubdo
     end
 
     alias_method :<<, :add
+    alias_method :save, :write
   end
 end

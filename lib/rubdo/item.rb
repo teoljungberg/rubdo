@@ -1,6 +1,6 @@
 module Rubdo
   class Item
-    attr_reader :description
+    attr_accessor :description
 
     def initialize(description)
       @description = description

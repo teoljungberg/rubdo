@@ -39,4 +39,17 @@ describe Rubdo::List do
       @list.to_a.size.should eq(1)
     end
   end
+
+  describe '#edit' do
+    before do
+      @list = Rubdo::List.new(Rubdo::List.read(File.join(File.dirname(__FILE__), 'test.yml')))
+    end
+
+    it 'edits a task' do
+      @list.add("I can't go out, I'm sik")
+      @list.edit(0).description = "I can't go out, I'm sick"
+      @list.to_a[0].description.should eq("I can't go out, I'm sick")
+      @list.to_a.size.should eq(1)
+    end
+  end
 end

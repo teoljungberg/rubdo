@@ -1,6 +1,6 @@
 # Rubdo
 
-A quick and dirty todo application
+Why does todo applications need to be so complicated?
 
 ## Installation
 

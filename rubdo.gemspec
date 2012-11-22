@@ -4,8 +4,8 @@ require File.expand_path('../lib/rubdo/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Teo Ljungberg"]
   gem.email         = ["teo.ljungberg@gmail.com"]
-  gem.description   = %q{A quick and dirty todo application}
-  gem.summary       = %q{A quick and dirty todo application}
+  gem.description   = %q{My take on the todo-applications}
+  gem.summary       = %q{My take on the todo-applications}
   gem.homepage      = "http://github.com/metamorfos/rubdo"
 
   gem.files         = `git ls-files`.split($\)

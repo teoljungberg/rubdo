@@ -2,8 +2,9 @@ require 'tempfile'
 
 module Rubdo
   class CLI
+
     def initialize
-      todos = List.read(File.expand_path('~/.tasks/Todo.yml'))
+      todos = ENV['TODO_FILE'] ? List.read : List.read('~/.tasks/Todo.yml')
       @list = List.new(todos)
       @id = ARGV[1].to_i - 1
     end
@@ -12,13 +13,12 @@ module Rubdo
       if ARGV[1]
         @list.add ARGV[1]
       else
-        tmp_file = Tempfile.new('new_task')
-        system("$EDITOR #{tmp_file.path}")
-        unless File.read(tmp_file.path).empty?
-          @list.add File.read(tmp_file).chomp
-          tmp_file.delete
-        else
+        tf = Tempfile.new('new_task')
+        open_file_with_editor(tf)
+        if File.read(tf.path).empty?
           puts "aborted due to empty file"
+        else
+          @list.add File.read(tf).chomp
         end
       end
       save
@@ -31,19 +31,16 @@ module Rubdo
     alias_method :rm, :done
 
     def list
-      @list.to_a.each_with_index { |item, index| puts "#{index + 1}: #{item.description}" }
-      puts "no tasks" if @list.to_a.empty?
+      list_tasks unless @list.to_a.empty?
     end
     alias_method :ls, :list
 
     def edit
       abort("not a valid id") if @id == -1 or @id > @list.to_a.length
-
-      tmp_file = Tempfile.new('new_description')
-      File.open(tmp_file.path, 'w') { |f| f.write(@list.to_a[@id].description) }
-      system("$EDITOR #{tmp_file.path}")
-      @list.to_a[@id].description = File.read(tmp_file).chomp
-      tmp_file.delete
+      tf = Tempfile.new('new_description')
+      write_task_to_file(tf)
+      open_file_with_editor(tf)
+      @list.to_a[@id].description = File.read(tf.path).chomp
       save
     end
 
@@ -63,6 +60,18 @@ help - Prints out this information
 
     def save
       @list.write
+    end
+
+    def list_tasks
+      @list.to_a.each_with_index { |item, index| puts "#{index + 1}: #{item.description}" }
+    end
+
+    def open_file_with_editor(file)
+      system("$EDITOR #{file.path}")
+    end
+
+    def write_task_to_file(file)
+      File.open(file.path, 'w') { |f| f.write(@list.to_a[@id].description) }
     end
   end
 end

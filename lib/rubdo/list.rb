@@ -1,22 +1,15 @@
 require 'time'
 require 'yaml'
-require 'fileutils'
 
 module Rubdo
   class List
-    attr_accessor :items, :storage
-
-    def self.read(file)
-      todos = YAML.load_file(file) if File.exists? file
-      todos ||=[]
-
-      todos
+    def self.read(file = nil)
+      @@todo_file = expand(ENV['TODO_FILE'] || file)
+      File.exists?(@@todo_file) ? YAML.load_file(@@todo_file) : []
     end
 
     def initialize(todos)
       @items = todos
-      @storage = File.expand_path('~/.tasks/Todo.yml')
-      FileUtils.mkdir_p File.dirname @storage
     end
 
     def add(description)
@@ -33,12 +26,22 @@ module Rubdo
     end
 
     def write
-      File.open(self.storage, 'w') { |todos| todos.write(@items.to_yaml) }
+      File.open(todo_file, 'w') { |todos| todos.write(@items.to_yaml) }
     end
     alias_method :save, :write
 
     def to_a
-      self.items
+      @items
+    end
+
+    def todo_file
+      @@todo_file
+    end
+
+    private
+
+    def self.expand(file)
+      File.expand_path file
     end
   end
 end

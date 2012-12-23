@@ -15,7 +15,18 @@ end
 
 describe Rubdo::List do
   before do
-    @list = Rubdo::List.new([])
+    ENV['TODO_FILE'] = '~/.tasks/tmp.yml'
+    @list = Rubdo::List.new(Rubdo::List.read)
+  end
+
+  describe 'ENV. variables' do
+    it 'changing TODO files' do
+      @list.add('Buy candles')
+      @list.to_a.size.should eq(1)
+      @list.save
+
+      @list.todo_file.should eq(File.expand_path('~/.tasks/tmp.yml'))
+    end
   end
 
   describe '#add' do
@@ -23,34 +34,32 @@ describe Rubdo::List do
       @list.add('Buy milk')
       @list.add('Buy beer')
       @list.add('But peanuts')
+
       @list.to_a.size.should eq(3)
     end
   end
 
   describe '#done' do
-    before do
-      @list = Rubdo::List.new([])
-    end
-
     it 'deletes an item from the list' do
       @list.add('Watch TV')
       @list.add('Walk the dog')
-      @list.done(0).description.should eq('Watch TV')
+      @list.done(0)
+
       @list.to_a.size.should eq(1)
     end
   end
 
   describe '#edit' do
-    before do
-      @list = Rubdo::List.new([])
-    end
-
     it 'changes the description of a certain task' do
       @list.add("I can't go out, I'm sik")
       @list.edit(0).description = "I can't go out, I'm sick"
+
       @list.to_a[0].description.should eq("I can't go out, I'm sick")
-      @list.to_a.first.description eq("I can't go out, I'm sick")
       @list.to_a.size.should eq(1)
     end
+  end
+
+  after(:each) do
+    FileUtils.rm_f File.expand_path('~/.tasks/tmp.yml')
   end
 end

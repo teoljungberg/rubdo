@@ -28,11 +28,13 @@ module Rubdo
       @list.done @id
       save
     end
+    alias_method :rm, :done
 
     def list
       @list.to_a.each_with_index { |item, index| puts "#{index + 1}: #{item.description}" }
       puts "no tasks" if @list.to_a.empty?
     end
+    alias_method :ls, :list
 
     def edit
       abort("not a valid id") if @id == -1 or @id > @list.to_a.length
@@ -56,9 +58,6 @@ remove/rm [task id] - Deletes the specific task, same as done
 help - Prints out this information
       HELP
     end
-
-    alias_method :ls, :list
-    alias_method :rm, :done
 
     private
 

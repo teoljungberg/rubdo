@@ -1,5 +1,5 @@
 require 'rspec'
-require 'rubdo'
+require_relative '../lib/rubdo'
 
 describe Rubdo::Item do
   before do

@@ -4,7 +4,7 @@ module Rubdo
   class CLI
 
     def initialize
-      todos = ENV['TODO_FILE'] ? List.read : List.read('~/.tasks/Todo.yml')
+      todos = List.read('~/.tasks/Todo.yml')
       @list = List.new(todos)
       @id = ARGV[1].to_i - 1
     end
@@ -14,12 +14,8 @@ module Rubdo
         @list.add ARGV[1]
       else
         tf = Tempfile.new('new_task')
-        open_file_with_editor(tf)
-        if File.read(tf.path).empty?
-          puts "aborted due to empty file"
-        else
-          @list.add File.read(tf).chomp
-        end
+        @list.add Rubdo::Editor.add(tf.path)
+        tf.unlink
       end
       save
     end
@@ -36,11 +32,10 @@ module Rubdo
     alias_method :ls, :list
 
     def edit
-      abort("not a valid id") if @id == -1 or @id > @list.to_a.length
+      abort("not a valid id") if @id > @list.to_a.size
       tf = Tempfile.new('new_description')
-      write_task_to_file(tf)
-      open_file_with_editor(tf)
-      @list.to_a[@id].description = File.read(tf.path).chomp
+      @list.to_a[@id].description = Rubdo::Editor.edit(tf.path, @list.to_a[@id].description)
+      tf.unlink
       save
     end
 
@@ -66,12 +61,5 @@ help - Prints out this information
       @list.to_a.each_with_index { |item, index| puts "#{index + 1}: #{item.description}" }
     end
 
-    def open_file_with_editor(file)
-      system("$EDITOR #{file.path}")
-    end
-
-    def write_task_to_file(file)
-      File.open(file.path, 'w') { |f| f.write(@list.to_a[@id].description) }
-    end
   end
 end

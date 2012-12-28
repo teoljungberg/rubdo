@@ -3,13 +3,18 @@ require 'yaml'
 
 module Rubdo
   class List
+
+    attr_reader :items, :todo_file
+
     def self.read(file = nil)
-      @@todo_file = expand(ENV['TODO_FILE'] || file)
-      File.exists?(@@todo_file) ? YAML.load_file(@@todo_file) : []
+      todo_file = File.expand_path file
+      items = File.exists?(todo_file) ? YAML.load_file(todo_file) : []
+      { items: items, todo_file: todo_file }
     end
 
-    def initialize(todos)
-      @items = todos
+    def initialize(options)
+      @items = options[:items]
+      @todo_file = options[:todo_file]
     end
 
     def add(description)
@@ -26,7 +31,7 @@ module Rubdo
     end
 
     def write
-      File.open(todo_file, 'w') { |todos| todos.write(@items.to_yaml) }
+      File.open(@todo_file, 'w') { |f| f.write(@items.to_yaml) }
     end
     alias_method :save, :write
 
@@ -34,14 +39,5 @@ module Rubdo
       @items
     end
 
-    def todo_file
-      @@todo_file
-    end
-
-    private
-
-    def self.expand(file)
-      File.expand_path file
-    end
   end
 end

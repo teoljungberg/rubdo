@@ -15,17 +15,13 @@ end
 
 describe Rubdo::List do
   before do
-    ENV['TODO_FILE'] = '~/.tasks/tmp.yml'
-    @list = Rubdo::List.new(Rubdo::List.read)
+    @list = Rubdo::List.new({ items: [], todo_file: '/tmp/todo.yml'})
   end
 
-  describe 'ENV. variables' do
-    it 'changing TODO files' do
-      @list.add('Buy candles')
-      @list.to_a.size.should eq(1)
-      @list.save
-
-      @list.todo_file.should eq(File.expand_path('~/.tasks/tmp.yml'))
+  describe '#new' do
+    it 'initializes and sets items and todo_file' do
+      @list.items.should eq []
+      @list.todo_file.should eq '/tmp/todo.yml'
     end
   end
 
@@ -57,9 +53,5 @@ describe Rubdo::List do
       @list.to_a[0].description.should eq("I can't go out, I'm sick")
       @list.to_a.size.should eq(1)
     end
-  end
-
-  after(:each) do
-    FileUtils.rm_f File.expand_path('~/.tasks/tmp.yml')
   end
 end

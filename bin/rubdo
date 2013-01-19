@@ -6,7 +6,7 @@ require 'abbrev'
 cli = Rubdo::CLI.new
 methods = Rubdo::CLI.public_instance_methods(false).map(&:to_s).abbrev
 cli.list if ARGV[0].nil?
-begin 
+begin
   cli.send methods[ARGV[0]] unless ARGV[0].nil?
 rescue
   puts "cowardly refuses" unless methods[ARGV[0]]

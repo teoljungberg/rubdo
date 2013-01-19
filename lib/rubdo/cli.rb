@@ -3,7 +3,7 @@ require 'tempfile'
 module Rubdo
   class CLI
     def initialize
-      todos = List.read(File.expand_path('~/.tasks/Todo.yml'))
+      todos = List.read(todo_file)
       @list = List.new(todos)
       @id = ARGV[1].to_i - 1
     end
@@ -12,14 +12,7 @@ module Rubdo
       if ARGV[1]
         @list.add ARGV[1]
       else
-        tmp_file = Tempfile.new('new_task')
-        system("$EDITOR #{tmp_file.path}")
-        unless File.read(tmp_file.path).empty?
-          @list.add File.read(tmp_file).chomp
-          tmp_file.delete
-        else
-          puts "aborted due to empty file"
-        end
+        Tempfile.open('new_task') { |tf| @list.add Rubdo::Editor.add(tf.path) }
       end
       save
     end
@@ -31,19 +24,13 @@ module Rubdo
     alias_method :rm, :done
 
     def list
-      @list.to_a.each_with_index { |item, index| puts "#{index + 1}: #{item.description}" }
-      puts "no tasks" if @list.to_a.empty?
+      list_tasks unless @list.to_a.empty?
     end
     alias_method :ls, :list
 
     def edit
-      abort("not a valid id") if @id == -1 or @id > @list.to_a.length
-
-      tmp_file = Tempfile.new('new_description')
-      File.open(tmp_file.path, 'w') { |f| f.write(@list.to_a[@id].description) }
-      system("$EDITOR #{tmp_file.path}")
-      @list.to_a[@id].description = File.read(tmp_file).chomp
-      tmp_file.delete
+      abort("not a valid id") if @id > @list.to_a.size
+      Tempfile.open('new_description') { |tf| task.description = Rubdo::Editor.edit(tf.path, task.description) }
       save
     end
 
@@ -63,6 +50,18 @@ help - Prints out this information
 
     def save
       @list.write
+    end
+
+    def list_tasks
+      @list.to_a.each_with_index { |item, index| puts "#{index + 1}: #{item.description}" }
+    end
+
+    def task
+      @list.to_a[@id]
+    end
+
+    def todo_file
+      @todo_file ||= '~/.tasks/Todo.yml'
     end
   end
 end

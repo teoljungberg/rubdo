@@ -7,7 +7,7 @@ module Rubdo
     end
 
     def to_s
-      self.description
+      description
     end
   end
 end

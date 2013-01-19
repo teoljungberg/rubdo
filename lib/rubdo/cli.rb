@@ -2,9 +2,8 @@ require 'tempfile'
 
 module Rubdo
   class CLI
-
     def initialize
-      todos = List.read('~/.tasks/Todo.yml')
+      todos = List.read(todo_file)
       @list = List.new(todos)
       @id = ARGV[1].to_i - 1
     end
@@ -13,9 +12,7 @@ module Rubdo
       if ARGV[1]
         @list.add ARGV[1]
       else
-        tf = Tempfile.new('new_task')
-        @list.add Rubdo::Editor.add(tf.path)
-        tf.unlink
+        Tempfile.open('new_task') { |tf| @list.add Rubdo::Editor.add(tf.path) }
       end
       save
     end
@@ -33,9 +30,7 @@ module Rubdo
 
     def edit
       abort("not a valid id") if @id > @list.to_a.size
-      tf = Tempfile.new('new_description')
-      @list.to_a[@id].description = Rubdo::Editor.edit(tf.path, @list.to_a[@id].description)
-      tf.unlink
+      Tempfile.open('new_description') { |tf| task.description = Rubdo::Editor.edit(tf.path, task.description) }
       save
     end
 
@@ -61,5 +56,12 @@ help - Prints out this information
       @list.to_a.each_with_index { |item, index| puts "#{index + 1}: #{item.description}" }
     end
 
+    def task
+      @list.to_a[@id]
+    end
+
+    def todo_file
+      @todo_file ||= '~/.tasks/Todo.yml'
+    end
   end
 end

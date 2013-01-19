@@ -23,8 +23,7 @@ module Rubdo
     end
 
     def self.read_description(file)
-      File.read(file)
+      File.read(file).chomp
     end
-
   end
 end

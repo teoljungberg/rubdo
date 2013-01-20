@@ -1,4 +1,4 @@
-require_relative '../lib/rubdo/item'
+require_relative '../../lib/rubdo/item'
 
 describe Rubdo::Item do
   let(:item) { Rubdo::Item.new 'New todo item' }

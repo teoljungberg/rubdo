@@ -1,4 +1,5 @@
 # Rubdo
+[![Build Status](https://travis-ci.org/metamorfos/rubdo.png)](https://travis-ci.org/metamorfos/rubdo)
 
 Why does todo applications need to be so complicated?
 

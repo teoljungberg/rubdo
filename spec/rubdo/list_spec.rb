@@ -1,5 +1,5 @@
-require_relative '../../lib/rubdo/list'
-require_relative '../../lib/rubdo/item'
+require 'rubdo/list'
+require 'rubdo/item'
 
 describe Rubdo::List do
   let(:list) { Rubdo::List.new items: [], todo_file: '/tmp/todo.yml' }
